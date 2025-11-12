@@ -47,7 +47,7 @@
 #define ADD10 (BIT(3))
 #define BTF (BIT(2))
 #define I2C_ADDR_RX (BIT(1))
-#define SB (BIT(0))
+#define I2C_SB_FLAG (BIT(0))
 
 /* SR2 Registers */
 #define DUALF (BIT(7))
