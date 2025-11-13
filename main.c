@@ -7,12 +7,10 @@
 #include <hal.h>
 #include <uart.h>
 #include <i2c.h>
+#include <si7021.h>
 
 int main(void) {
 	/* Configure hal.h to hold pin bank and pins, 32bits can fit both */
-
-	char buf[8] = "Done\r\n";
-	static const size_t buff_len = 6;
 
 	uart2_init();
 	i2c1_init();
@@ -20,7 +18,12 @@ int main(void) {
 	systick_init();
 
 	for (;;) {
-		printf("I print stuff %d\r\n", 45);
+		float temp_val;
+		si7021_read_temp(&temp_val);
+
+		/* Probably getting stuck on a flag poll loop */
+		printf("Temp val: %d", (int)temp_val);
+		printf("done\r\n");
 		delay(500);
 	}
 	return 0;
