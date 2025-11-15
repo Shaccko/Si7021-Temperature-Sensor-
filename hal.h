@@ -8,6 +8,8 @@
 
 #include <rcc.h>
 
+#define CPACR ((uint32_t*) 0xE000ED88) /* Address to enable FPU */
+
 #define _IO volatile
 #define BIT(x) (1UL << (x))
 #define GPIO(bank) ((struct gpio*) (0x40020000 + 0x400 * (bank)))

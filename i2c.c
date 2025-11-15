@@ -9,23 +9,15 @@ struct i2c* i2c1 = I2C1;
 static void i2c_unstick(uint8_t pin_port, uint16_t scl_pin, uint16_t sda_pin) {
 	/* This just resets slave if it gets stuck during a new flash/board reset */
 	gpio_set_mode(scl_pin | sda_pin, GPIO_MODE_AF_OD, pin_port);
-
 	gpio_write_pin(sda_pin, GPIO_PIN_SET, pin_port);
 
-	/* Send 9 clk pulses */
+	/* Send 9 clock pulses */
 	for (int i=0; i<9; i++) {
 		gpio_write_pin(scl_pin, GPIO_PIN_SET, pin_port);
 		for (volatile int d=0; d<100; d++);
 		gpio_write_pin(scl_pin, GPIO_PIN_SET, pin_port);
 		for (volatile int d=0; d<100; d++);
 	}
-
-	/* Send a stop */
-	gpio_write_pin(scl_pin, GPIO_PIN_SET, pin_port);
-	for (volatile int d=0; d<100; d++);
-	gpio_write_pin(sda_pin, GPIO_PIN_RESET, pin_port);
-	for (volatile int d=0; d<100; d++);
-	gpio_write_pin(sda_pin, GPIO_PIN_SET, pin_port);
 }
 
 void i2c_init(struct i2c* i2c, uint32_t i2c_pins, uint8_t i2c_port) {
@@ -146,9 +138,8 @@ void i2c_reg_read(struct i2c* i2c, uint8_t addr, uint8_t* cmd, size_t cmd_len, u
 		while(!(i2c->SR1 & I2C_BTF_FLAG));
 		i2c->CR1 |= STOP;
 
-		*rx_buf = (uint8_t) i2c->DR;
-		rx_buf++;
-		*rx_buf = (uint8_t) i2c->DR;
+		rx_buf[0] = (uint8_t) i2c->DR;
+		rx_buf[1] = (uint8_t) i2c->DR;
 	}
 
 	else if (rx_bytes == 1) {
