@@ -8,7 +8,7 @@
 
 #include <rcc.h>
 
-#define CPACR ((uint32_t*) 0xE000ED88) /* Address to enable FPU */
+#define CPACR ((volatile uint32_t*) 0xE000ED88) /* Address to enable FPU */
 
 #define _IO volatile
 #define BIT(x) (1UL << (x))

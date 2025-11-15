@@ -13,10 +13,10 @@ uint8_t si7021_get_firmware(void) {
 	return firmware;
 }
 
-uint8_t si7021_read_temp(float* rx_buf) {
+uint8_t si7021_read_temp(double* rx_buf) {
 	static uint8_t reg_temp = TEMP_HMM;
 	static uint8_t reg_len = 1;
-	float temp_val = 0.0f;
+	double temp_val = 0.0f;
 	uint8_t tmp[2];
 	/* Temp code is 16 bits, so split among 2 bytes */
 	i2c_reg_read(i2c1, SI7021_ADDR, &reg_temp, reg_len, tmp, 2); 
@@ -25,7 +25,6 @@ uint8_t si7021_read_temp(float* rx_buf) {
 		temp_val = ((175.72f * temp_code) / 65536.0f) - 46.85f;
 		
 		*rx_buf = temp_val;
-		printf("pass\r\n");
 	}
 	else {
 		return FAIL;
@@ -35,17 +34,17 @@ uint8_t si7021_read_temp(float* rx_buf) {
 	return PASS;
 }
 
-uint8_t si7021_read_humidity(float* rx_buf) {
+uint8_t si7021_read_humidity(double* rx_buf) {
 	static uint8_t reg_humid = HUMIDITY_HMM;
 	static uint8_t reg_len = 1;
-	float humid_val = 0.0f;
+	double humid_val = 0.0f;
 	uint8_t tmp[2];
 	
 	i2c_reg_read(i2c1, SI7021_ADDR, &reg_humid, reg_len, tmp, 2);
 	
 	if ((tmp[1] & 0x3) != 0) {
 		uint16_t humid_code = (uint16_t)(((uint16_t)tmp[0] << 8U) | (uint16_t)(tmp[1]));
-		humid_val = (((125.0f * ((float) humid_code)) / 65536.0f) - 6.0f);
+		humid_val = (((125.0f * humid_code) / 65536.0f) - 6.0f);
 	}
 	else {
 		return FAIL;

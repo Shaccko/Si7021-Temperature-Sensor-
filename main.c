@@ -18,14 +18,16 @@ int main(void) {
 
 	systick_init();
 
-	uint32_t* fpu = CPACR;
+	volatile uint32_t* fpu = CPACR;
 	*fpu |= 0xF << 20; /* Set FPU bits */
 
 	for (;;) {
 
-		float temp_val = 0;
+		double temp_val = 0.0f;
 		si7021_read_temp(&temp_val);
 
+		/* 5kb worth operation wowee */
+		/* Also float is unrepresented, would need implementation etc, so just gonna cast to int */
 		printf("temp_val %d\r\n", (int)temp_val);
 
 
