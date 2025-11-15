@@ -21,6 +21,8 @@ int main(void) {
 	volatile uint32_t* fpu = CPACR;
 	*fpu |= 0xF << 20; /* Set FPU bits */
 
+	si7021_get_firmware();
+
 	for (;;) {
 
 		double temp_val = 0.0f;
