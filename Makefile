@@ -6,6 +6,12 @@ LDFLAGS ?= -Tlink.ld -nostartfiles -nostdlib --specs nano.specs -lc -lgcc -Wl,--
 SOURCES = main.c rcc.c startup.c uart.c i2c.c si7021.c syscalls.c
 HEADER = rcc.h hal.h uart.h i2c.h si7021.h
 
+ifeq ($(OS),WINDOWS_NT)
+	RM = cmd /C del /Q /F *.elf *~ *.o *.bin
+else
+	RM = rm -f *.bin *.elf *.o 
+endif
+
 build: firmware.elf firmware.bin
 
 flash: firmware.bin
@@ -18,4 +24,4 @@ firmware.elf: $(SOURCES) $(HEADER)
 	arm-none-eabi-gcc $(SOURCES) $(CFLAGS) $(LDFLAGS) -o $@
 
 clean:
-	cmd /C del /Q /F firmware.* *~ *.o
+	$(RM)
