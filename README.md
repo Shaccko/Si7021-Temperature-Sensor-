@@ -4,7 +4,6 @@ This project is built on top of the Bare Metal Programming Guide for STM32
 (https://github.com/cpq/bare-metal-programming-guide)
 
 by Ghanim
-ghanimj@hotmail.com
 
 This project's design purpose was to mainly further understanding of bare-metal embedded programming,
 and to get a sense of understanding of how I2C works under the hood. A temperature sensor module Si7021 is used
